@@ -11,6 +11,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
 import subprocess
+import argparse
 
 
 def load_data(filepath):
@@ -85,6 +86,7 @@ def model_run(X, y, model):
 if __name__ == "__main__": 
 
     subprocess.run(["pip", "install", "-r", "requirements.txt"])
+    parser = argparse.ArgumentParser(description="Inference script for cyber-physical anomaly detection competition")
     parser.add_argument('--data_path', type=str, required=True, help="Path to the CSV file containing the test data")
     parser.add_argument('--model_path', type=str, required=True, help="Path to the pre-trained model file (.pth or .h5)")
     args = parser.parse_args()
