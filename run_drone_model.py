@@ -15,6 +15,7 @@ import argparse
 
 
 def load_data(filepath):
+    print("Loading Data - ", filepath)
     return pd.read_csv(filepath)
 
 def drop_columns(data):
@@ -50,8 +51,9 @@ def normalize_data(df):
 def create_sequences(data, time_steps):
     X = []
     y = []
+    data_X = np.delete(data, -1, axis=1)
     for i in range(len(data) - time_steps):
-        row = [a for a in data[i:i+time_steps]]
+        row = [a for a in data_X[i:i+time_steps]]
         X.append(row)
         label = data[i+time_steps, -1]
         y.append(label)
@@ -59,6 +61,7 @@ def create_sequences(data, time_steps):
 
 
 def clean_data(df):
+    print("Preparing Data")
     df = drop_columns(df)
     df = weight_data(df)
     df = normalize_data(df)
@@ -67,8 +70,10 @@ def clean_data(df):
     return X, y
 
 def load_model(model_path):
+    print("Loading model - ", model_path)
     return tf.keras.models.load_model(model_path)
 def model_run(X, y, model):
+    print('Evaluating model')
     y_pred_probs = model.predict(X)
     y_pred = (y_pred_probs > .5).astype(int)
     
@@ -85,6 +90,7 @@ def model_run(X, y, model):
 
 if __name__ == "__main__": 
 
+    print('Installing packages from requirements.txt')
     subprocess.run(["pip", "install", "-r", "requirements.txt"])
     parser = argparse.ArgumentParser(description="Inference script for cyber-physical anomaly detection competition")
     parser.add_argument('--data_path', type=str, required=True, help="Path to the CSV file containing the test data")
