@@ -62,7 +62,7 @@ def clean_data(df):
     df = drop_columns(df)
     df = weight_data(df)
     df = normalize_data(df)
-    X, y = create_sequences(np.hstack([df, df['class'].values.reshape(-1, 1)]), time_steps=5)
+    X, y = create_sequences(np.hstack([df.drop(columns=['class']), df['class'].values.reshape(-1, 1)]), time_steps=5)
 
     return X, y
 
